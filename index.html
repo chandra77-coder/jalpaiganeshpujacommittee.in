@@ -1,235 +1,911 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jalpaiganeshpujacommittee</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-    body { background: #f8fafc; color: #1e293b; line-height: 1.6; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jalpai Ganesh Puja Committee</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@300;400;600;700&family=Noto+Serif+Bengali:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #FFD700;
+    --gold-dim: #B8960C;
+    --gold-light: #FFF5CC;
+    --gold-glow: rgba(255,215,0,0.35);
+    --dark: #07030A;
+    --darker: #030106;
+  }
 
-    /* Header */
-    header {
-      background: linear-gradient(135deg, #f59e0b, #b45309);
-      color: #fff;
-      padding: 80px 20px;
-      text-align: center;
-    }
-    header h1 { font-size: 42px; font-weight: 700; }
-    header p { margin-top: 15px; font-size: 18px; opacity: 0.95; }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-    /* Navigation */
-    nav {
-      position: sticky;
-      top: 0;
-      background: #1e293b;
-      padding: 12px 0;
-      text-align: center;
-      z-index: 1000;
-    }
-    nav a {
-      color: #fff;
-      margin: 0 15px;
-      text-decoration: none;
-      font-weight: 500;
-    }
-    nav a:hover { color: #fbbf24; }
+  html { scroll-behavior: smooth; }
 
-    /* Section */
-    section { padding: 70px 20px; max-width: 1100px; margin: auto; }
-    section h2 {
-      text-align: center;
-      font-size: 32px;
-      margin-bottom: 20px;
-      position: relative;
-    }
-    section h2::after {
-      content: '';
-      width: 80px;
-      height: 4px;
-      background: #f59e0b;
-      display: block;
-      margin: 10px auto 0;
-      border-radius: 2px;
-    }
-    section p { max-width: 800px; margin: 20px auto; text-align: center; }
+  body {
+    background: var(--darker);
+    color: var(--gold-light);
+    font-family: 'Cinzel', serif;
+    overflow-x: hidden;
+    cursor: crosshair;
+  }
 
-    /* Cards */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 25px;
-      margin-top: 40px;
-    }
-    .card {
-      background: #fff;
-      padding: 30px 25px;
-      border-radius: 18px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      text-align: center;
-    }
-    .card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.12);
-    }
-    .card h3 { margin-bottom: 10px; color: #b45309; }
+  /* ══════════════════════════════════════════
+     CINEMATIC INTRO
+  ══════════════════════════════════════════ */
+  #intro {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: opacity 1.4s cubic-bezier(0.4,0,0.2,1);
+  }
 
-    /* Gallery */
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-      margin-top: 40px;
-    }
-    .gallery div {
-      height: 180px;
-      background: #fde68a;
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 600;
-      color: #92400e;
-    }
+  #intro.out {
+    opacity: 0;
+    pointer-events: none;
+  }
 
-    /* Contact */
-    .contact {
-      background: linear-gradient(135deg, #1e293b, #020617);
-      color: #fff;
-      border-radius: 20px;
-      padding: 50px 20px;
-    }
-    .contact p { color: #e5e7eb; }
+  /* Central light burst */
+  .intro-burst {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow:
+      0 0 80px 80px rgba(255,215,0,0.04),
+      0 0 200px 200px rgba(255,180,0,0.025),
+      0 0 500px 500px rgba(255,120,0,0.012);
+    animation: burstAppear 1.2s ease 0.2s both;
+  }
 
-    /* Footer */
-    footer {
-      background: #020617;
-      color: #cbd5f5;
-      text-align: center;
-      padding: 20px;
-      margin-top: 60px;
-      font-size: 14px;
-    }
-  </style>
+  @keyframes burstAppear {
+    from { opacity: 0; transform: translate(-50%,-50%) scale(0); }
+    to   { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+  }
+
+  /* Horizontal scanlines (cinematic bars) */
+  .intro-bar {
+    position: absolute;
+    left: 0; right: 0;
+    height: 8vh;
+    background: #000;
+    z-index: 1;
+  }
+  .intro-bar.top    { top: 0;    animation: barTop    1.8s cubic-bezier(0.76,0,0.24,1) 0.1s both; }
+  .intro-bar.bottom { bottom: 0; animation: barBottom 1.8s cubic-bezier(0.76,0,0.24,1) 0.1s both; }
+
+  @keyframes barTop    { from { transform: scaleY(12); } to { transform: scaleY(1); } }
+  @keyframes barBottom { from { transform: scaleY(12); } to { transform: scaleY(1); } }
+
+  /* Content wrapper */
+  .intro-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    text-align: center;
+    padding: 0 24px;
+  }
+
+  .intro-est {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(8px, 1.2vw, 11px);
+    letter-spacing: 0.9em;
+    color: rgba(255,215,0,0.4);
+    text-transform: uppercase;
+    opacity: 0;
+    margin-bottom: 28px;
+    animation: revealFade 0.7s ease 1.0s both;
+  }
+
+  .intro-line {
+    width: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin-bottom: 32px;
+    animation: lineGrow 0.9s cubic-bezier(0.76,0,0.24,1) 0.9s both;
+  }
+
+  @keyframes lineGrow { to { width: min(340px, 80vw); } }
+
+  .intro-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(26px, 5.5vw, 68px);
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: 0.1em;
+    background: linear-gradient(160deg, #FFF8DC 0%, #FFD700 40%, #FF9A00 70%, #B8760C 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 0 40px rgba(255,200,0,0.55));
+    opacity: 0;
+    transform: scale(0.86);
+    animation: titleBurst 1.3s cubic-bezier(0.16,1,0.3,1) 1.4s both;
+  }
+
+  @keyframes titleBurst {
+    0%   { opacity: 0; transform: scale(0.86); filter: drop-shadow(0 0 0px transparent); }
+    55%  { opacity: 1; transform: scale(1.03); }
+    100% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 50px rgba(255,200,0,0.65)); }
+  }
+
+  .intro-line2 {
+    width: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin-top: 28px;
+    animation: lineGrow 0.9s cubic-bezier(0.76,0,0.24,1) 2.1s both;
+  }
+
+  .intro-sub {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(8px, 1.2vw, 11px);
+    letter-spacing: 0.6em;
+    color: rgba(255,215,0,0.35);
+    text-transform: uppercase;
+    margin-top: 22px;
+    opacity: 0;
+    animation: revealFade 0.7s ease 2.3s both;
+  }
+
+  .intro-year {
+    font-family: 'Noto Serif Bengali', serif;
+    font-size: clamp(11px, 1.5vw, 14px);
+    letter-spacing: 0.4em;
+    color: rgba(255,215,0,0.25);
+    margin-top: 14px;
+    opacity: 0;
+    animation: revealFade 0.5s ease 2.7s both;
+  }
+
+  @keyframes revealFade {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Loading bar */
+  .intro-loader {
+    position: absolute;
+    bottom: 10vh;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(220px, 60vw);
+    z-index: 2;
+  }
+  .intro-loader-track {
+    width: 100%;
+    height: 1px;
+    background: rgba(255,215,0,0.1);
+    position: relative;
+    overflow: hidden;
+  }
+  .intro-loader-fill {
+    position: absolute;
+    top: 0; left: 0;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, var(--gold), rgba(255,215,0,0.4));
+    animation: loaderFill 3.6s ease 0.3s both;
+    box-shadow: 0 0 8px rgba(255,215,0,0.6);
+  }
+  @keyframes loaderFill { from { width: 0; } to { width: 100%; } }
+
+  /* ══════════════════════════════════════════
+     MAIN SITE
+  ══════════════════════════════════════════ */
+  #main {
+    opacity: 0;
+    transition: opacity 1.6s ease;
+  }
+  #main.on { opacity: 1; }
+
+  /* Particles */
+  #particles {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ══════════════════════════════════════════
+     HERO
+  ══════════════════════════════════════════ */
+  #hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    padding: 80px 24px 60px;
+    background:
+      radial-gradient(ellipse 100% 70% at 50% 35%, #1C0E00 0%, #0C0500 45%, #000 100%);
+    overflow: hidden;
+  }
+
+  /* Layered atmospheric glows */
+  #hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 90% 55% at 50% 90%, rgba(255,140,0,0.05) 0%, transparent 65%),
+      radial-gradient(ellipse 50% 40% at 15% 40%, rgba(255,215,0,0.025) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 85% 40%, rgba(255,215,0,0.025) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  /* Decorative corner ornaments */
+  #hero::after {
+    content: '';
+    position: absolute;
+    inset: 32px;
+    border: 1px solid rgba(255,215,0,0.04);
+    pointer-events: none;
+  }
+
+  /* ══ OM SYMBOL ══ */
+  #om-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    animation: omFloat 5s ease-in-out infinite;
+  }
+
+  @keyframes omFloat {
+    0%,100% { transform: translateY(0); }
+    50%      { transform: translateY(-14px); }
+  }
+
+  .om-aura {
+    position: absolute;
+    width: 260px; height: 260px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,180,0,0.18) 0%, rgba(255,120,0,0.07) 40%, transparent 70%);
+    animation: omPulse 3.5s ease-in-out infinite;
+  }
+
+  @keyframes omPulse {
+    0%,100% { transform: scale(0.9);  opacity: 0.6; }
+    50%      { transform: scale(1.18); opacity: 1; }
+  }
+
+  .om-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(255,215,0,0.18);
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%) scale(1);
+    animation: ringPulse 4s ease-out infinite;
+  }
+  .om-ring:nth-child(2) { width: 180px; height: 180px; animation-delay: 0s; }
+  .om-ring:nth-child(3) { width: 240px; height: 240px; animation-delay: 1.3s; }
+  .om-ring:nth-child(4) { width: 300px; height: 300px; animation-delay: 2.6s; }
+
+  @keyframes ringPulse {
+    0%   { transform: translate(-50%,-50%) scale(0.8); opacity: 0.5; }
+    100% { transform: translate(-50%,-50%) scale(1.4); opacity: 0; }
+  }
+
+  .om-glyph {
+    font-family: 'Noto Serif Bengali', serif;
+    font-size: clamp(90px, 16vw, 160px);
+    line-height: 1;
+    background: linear-gradient(145deg, #FFFDE7 0%, #FFD700 25%, #FF9800 60%, #E65100 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    position: relative;
+    z-index: 1;
+    filter: drop-shadow(0 0 24px rgba(255,200,0,0.9)) drop-shadow(0 0 60px rgba(255,150,0,0.5));
+    animation: omGlow 3.5s ease-in-out infinite;
+  }
+
+  @keyframes omGlow {
+    0%,100% { filter: drop-shadow(0 0 22px rgba(255,200,0,0.85)) drop-shadow(0 0 55px rgba(255,150,0,0.45)); }
+    50%      { filter: drop-shadow(0 0 38px rgba(255,220,0,1))    drop-shadow(0 0 90px rgba(255,170,0,0.7)) drop-shadow(0 0 140px rgba(255,130,0,0.3)); }
+  }
+
+  /* ══ TITLE ══ */
+  .hero-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(18px, 3.8vw, 46px);
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.35;
+    letter-spacing: 0.1em;
+    background: linear-gradient(180deg, #FFFDE7 0%, #FFD700 45%, #B8760C 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 2px 24px rgba(255,215,0,0.28));
+    max-width: 860px;
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 1.1s ease, transform 1.1s ease;
+  }
+  .hero-title.on { opacity: 1; transform: translateY(0); }
+
+  /* ══ ORNAMENTAL DIVIDER ══ */
+  .ornament {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 20px 0;
+    opacity: 0;
+    transition: opacity 0.9s ease 0.2s;
+  }
+  .ornament.on { opacity: 1; }
+  .ornament-line {
+    flex: 1;
+    max-width: 130px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,215,0,0.5), transparent);
+  }
+  .ornament-dot  { width:  5px; height:  5px; background: var(--gold); transform: rotate(45deg); box-shadow: 0 0 8px var(--gold); }
+  .ornament-dash { width: 20px; height: 1px; background: rgba(255,215,0,0.4); }
+
+  /* ══ TAGLINE ══ */
+  .tagline-bn {
+    font-family: 'Noto Serif Bengali', serif;
+    font-size: clamp(18px, 3.2vw, 32px);
+    font-weight: 400;
+    color: rgba(255,240,170,0.92);
+    letter-spacing: 0.04em;
+    text-align: center;
+    text-shadow: 0 0 32px rgba(255,215,0,0.45);
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 1s ease 0.4s, transform 1s ease 0.4s;
+  }
+  .tagline-bn.on { opacity: 1; transform: translateY(0); }
+
+  .tagline-en {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(9px, 1.1vw, 11.5px);
+    letter-spacing: 0.28em;
+    color: rgba(255,215,0,0.32);
+    text-transform: uppercase;
+    margin-top: 8px;
+    text-align: center;
+    max-width: 520px;
+    line-height: 2.1;
+    opacity: 0;
+    transition: opacity 0.9s ease 0.6s;
+  }
+  .tagline-en.on { opacity: 1; }
+
+  /* ── Working status card ── */
+  .status-card {
+    margin-top: 40px;
+    border: 1px solid rgba(255,215,0,0.11);
+    padding: 24px 36px;
+    background: rgba(255,215,0,0.025);
+    backdrop-filter: blur(10px);
+    text-align: center;
+    max-width: 480px;
+    position: relative;
+    opacity: 0;
+    transition: opacity 1s ease 1s;
+  }
+  .status-card.on { opacity: 1; }
+  .status-card::before,
+  .status-card::after {
+    content: '';
+    position: absolute;
+    left: 12px; right: 12px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,215,0,0.2), transparent);
+  }
+  .status-card::before { top: 0; }
+  .status-card::after  { bottom: 0; }
+
+  .status-dot {
+    display: inline-block;
+    width: 7px; height: 7px;
+    background: #FFD700;
+    border-radius: 50%;
+    margin-right: 10px;
+    box-shadow: 0 0 8px rgba(255,215,0,0.9);
+    animation: dotBlink 2s ease-in-out infinite;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+  }
+  @keyframes dotBlink {
+    0%,100% { opacity: 1;    box-shadow: 0 0 8px rgba(255,215,0,0.9); }
+    50%      { opacity: 0.3;  box-shadow: 0 0 2px rgba(255,215,0,0.3); }
+  }
+  .status-text {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(9px, 1.1vw, 11px);
+    letter-spacing: 0.4em;
+    color: rgba(255,235,170,0.5);
+    text-transform: uppercase;
+    vertical-align: middle;
+  }
+
+  /* ══════════════════════════════════════════
+     COUNTDOWN
+  ══════════════════════════════════════════ */
+  #cd-wrap {
+    margin-top: 52px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    opacity: 0;
+    transition: opacity 0.9s ease 0.8s;
+  }
+  #cd-wrap.on { opacity: 1; }
+
+  .cd-label {
+    font-size: clamp(8px, 1.1vw, 10px);
+    letter-spacing: 0.7em;
+    color: rgba(255,215,0,0.38);
+    text-transform: uppercase;
+  }
+
+  .cd-grid {
+    display: flex;
+    align-items: flex-start;
+    gap: clamp(8px, 2vw, 20px);
+  }
+
+  .cd-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 9px;
+  }
+
+  .cd-num {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(26px, 4.5vw, 56px);
+    font-weight: 600;
+    color: var(--gold);
+    text-shadow: 0 0 18px rgba(255,215,0,0.55), 0 0 40px rgba(255,215,0,0.25);
+    line-height: 1;
+    min-width: clamp(58px, 8vw, 88px);
+    text-align: center;
+    padding: clamp(10px,1.4vw,15px) clamp(12px,1.8vw,20px);
+    background: rgba(255,215,0,0.04);
+    border: 1px solid rgba(255,215,0,0.12);
+    position: relative;
+    backdrop-filter: blur(8px);
+    transition: text-shadow 0.3s ease;
+  }
+
+  .cd-num::before,
+  .cd-num::after {
+    content: '';
+    position: absolute;
+    left: 8px; right: 8px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,215,0,0.25), transparent);
+  }
+  .cd-num::before { top: 0; }
+  .cd-num::after  { bottom: 0; }
+
+  .cd-sep {
+    font-size: clamp(22px, 3.5vw, 44px);
+    color: rgba(255,215,0,0.22);
+    font-family: 'Cinzel', serif;
+    margin-top: clamp(10px,1.4vw,15px);
+    line-height: 1;
+  }
+
+  .cd-tag {
+    font-size: clamp(6px, 0.85vw, 8px);
+    letter-spacing: 0.4em;
+    color: rgba(255,215,0,0.3);
+    text-transform: uppercase;
+  }
+
+  /* ══════════════════════════════════════════
+     CONTENT SECTIONS
+  ══════════════════════════════════════════ */
+  .section {
+    position: relative;
+    z-index: 1;
+    padding: clamp(70px,11vh,130px) clamp(24px,8vw,160px);
+    border-top: 1px solid rgba(255,215,0,0.05);
+  }
+
+  .s-inner {
+    max-width: 720px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .s-badge {
+    display: inline-block;
+    font-size: clamp(7px,0.9vw,9px);
+    letter-spacing: 0.75em;
+    color: rgba(255,215,0,0.38);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    position: relative;
+    padding: 0 20px;
+  }
+  .s-badge::before,
+  .s-badge::after {
+    content: '◆';
+    position: absolute;
+    top: 0;
+    font-size: 6px;
+    color: rgba(255,215,0,0.25);
+  }
+  .s-badge::before { left: 0; }
+  .s-badge::after  { right: 0; }
+
+  .s-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(20px,3.2vw,34px);
+    background: linear-gradient(170deg, #FFF8DC, #FFD700);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 28px;
+    filter: drop-shadow(0 0 14px rgba(255,215,0,0.18));
+    line-height: 1.3;
+  }
+
+  .s-text {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(11px,1.3vw,13.5px);
+    line-height: 2.1;
+    color: rgba(255,235,195,0.52);
+    letter-spacing: 0.04em;
+  }
+
+  /* Three-pillar grid */
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 24px;
+    margin-top: 50px;
+  }
+
+  @media (max-width: 680px) {
+    .pillars { grid-template-columns: 1fr; gap: 18px; }
+  }
+
+  .pillar {
+    border: 1px solid rgba(255,215,0,0.1);
+    padding: 32px 20px;
+    text-align: center;
+    background: rgba(255,215,0,0.02);
+    backdrop-filter: blur(6px);
+    transition: border-color 0.4s, background 0.4s;
+  }
+
+  .pillar:hover {
+    border-color: rgba(255,215,0,0.28);
+    background: rgba(255,215,0,0.045);
+  }
+
+  .pillar-icon {
+    font-size: 28px;
+    display: block;
+    margin-bottom: 16px;
+    filter: drop-shadow(0 0 10px rgba(255,200,0,0.7));
+  }
+
+  .pillar-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(12px,1.4vw,14px);
+    color: var(--gold);
+    letter-spacing: 0.06em;
+    margin-bottom: 10px;
+  }
+
+  .pillar-text {
+    font-size: clamp(10px,1.1vw,11.5px);
+    color: rgba(255,225,160,0.45);
+    line-height: 1.9;
+    letter-spacing: 0.04em;
+  }
+
+  /* ══════════════════════════════════════════
+     FOOTER
+  ══════════════════════════════════════════ */
+  footer {
+    position: relative;
+    z-index: 1;
+    padding: 44px 24px;
+    text-align: center;
+    border-top: 1px solid rgba(255,215,0,0.06);
+    background: rgba(0,0,0,0.5);
+  }
+
+  .footer-om {
+    font-family: 'Noto Serif Bengali', serif;
+    font-size: 22px;
+    color: rgba(255,215,0,0.3);
+    display: block;
+    margin-bottom: 14px;
+    filter: drop-shadow(0 0 8px rgba(255,200,0,0.4));
+  }
+
+  footer p {
+    font-size: clamp(7px,0.9vw,9px);
+    letter-spacing: 0.45em;
+    color: rgba(255,215,0,0.2);
+    text-transform: uppercase;
+    line-height: 2;
+  }
+
+  /* ══════════════════════════════════════════
+     SCROLL REVEAL
+  ══════════════════════════════════════════ */
+  .reveal {
+    opacity: 0;
+    transform: translateY(36px);
+    transition: opacity 1s ease, transform 1s ease;
+  }
+  .reveal.vis {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 480px) {
+    .om-ring { display: none; }
+    .cd-sep  { display: none; }
+    .intro-bar { height: 5vh; }
+  }
+</style>
 </head>
 <body>
 
-<header>
-  <div style="font-size:14px; letter-spacing:1px; margin-bottom:10px; opacity:0.9;">Welcome</div>
-  <h1>Jalpai Ganesh Puja Committee</h1>
-  <p style="font-size:20px; margin-top:12px;">''একতার শক্তিতে ভক্তির পরিবেশ'' </p>
-</header>
+<!-- ═══════════ CINEMATIC INTRO ═══════════ -->
+<div id="intro">
+  <div class="intro-burst"></div>
+  <div class="intro-bar top"></div>
+  <div class="intro-bar bottom"></div>
 
-<nav>
-  <a href="#about">About</a>
-  <a href="#activities">Activities</a>
-  <a href="#gallery">Gallery</a>
-  <a href="#contact">Contact</a>
-  <a href="#facebook" style="color:#fbbf24;">Facebook</a>
-</nav>
+  <div class="intro-content">
+    <div class="intro-est">Jalpai · West Bengal · India</div>
+    <div class="intro-line"></div>
+    <div class="intro-title">Jalpai<br>Ganesh Puja<br>Committee</div>
+    <div class="intro-line2"></div>
+    <div class="intro-sub">Sacred · Devotion · Unity</div>
+    <div class="intro-year">গণেশ পূজা ২০২৬</div>
+  </div>
 
-<section id="about">
-  <h2>About Our Committee</h2>
-  <p>
-    Jalpaiganeshpujacommittee is a symbol of faith, discipline, and togetherness. 
-    For years, our committee has been organizing Ganesh Puja with devotion and responsibility, 
-    blending tradition with modern creativity while strengthening community bonds.
-  </p>
-</section>
-
-<section id="activities">
-  <h2>Our Activities</h2>
-  <div class="grid">
-    <div class="card">
-      <h3>Ganesh Chaturthi</h3>
-      <p>Grand celebration with devotion, rituals, and cultural programs.</p>
-    </div>
-    <div class="card">
-      <h3>Cultural Events</h3>
-      <p>Our stage is where fun meets creativity and every moment turns into a memory</p>
-    </div>
-    <div class="card">
-      <h3>Social Work</h3>
-      <p>Community , awareness programs, and social responsibility.</p>
+  <div class="intro-loader">
+    <div class="intro-loader-track">
+      <div class="intro-loader-fill"></div>
     </div>
   </div>
-</section>
+</div>
 
-<section id="gallery">
-  <h2>Memories & Moments</h2>
-  <div class="gallery">
-    <div>Photo 1</div>
-    <div>Photo 2</div>
-    <div>Photo 3</div>
-    <div>Photo 4</div>
-  </div>
-</section>
+<!-- ═══════════ MAIN SITE ═══════════ -->
+<div id="main">
 
-<section id="contact">
-  <div class="contact">
-    <h2>Contact Us</h2>
-    <p>
-      📍 jalpai nowpal bagnan howrah 
-      ><br>West Bengal, India<br><br>
-      📧 Email: we will published it later<br><br>
-          </p>
-  </div>
-</section>
+  <canvas id="particles"></canvas>
 
-<section id="facebook">
-  <div class="contact">
-    <h2>Connect With Us</h2>
-    <p style="margin-bottom:20px;">
-      Stay connected with <b>Jalpai Ganesh Puja Committee</b> for updates, photos, and events.<br>
-      You can contact us directly via <b>Facebook Page DM</b>.
-    </p>
+  <!-- ── HERO ── -->
+  <section id="hero">
 
-    <div style="margin:25px 0;">
-      <a href="https://www.facebook.com/profile.php?id=61556516343528" target="_blank"
-        style="display:inline-block; margin:10px; padding:12px 22px; background:#1877f2; color:#fff; border-radius:30px; text-decoration:none; font-weight:600;">
-        Facebook Page 1
-      </a>
-
-      <a href="https://www.facebook.com/share/1DV8XmhFYd/" target="_blank"
-        style="display:inline-block; margin:10px; padding:12px 22px; background:#0f172a; color:#fff; border-radius:30px; text-decoration:none; font-weight:600;">
-        Facebook Page 2
-      </a>
+    <div id="om-wrap">
+      <div class="om-aura"></div>
+      <div class="om-ring"></div>
+      <div class="om-ring"></div>
+      <div class="om-ring"></div>
+      <span class="om-glyph">ॐ</span>
     </div>
 
-    <p style="margin-top:25px; font-size:15px; opacity:0.9;">
-       You can also find us on <b>Google Maps</b>:<br>
-      <a href="https://www.google.com/maps/search/Jalpai+Ganesh+Puja+Committee" target="_blank"
-         style="color:#fbbf24; font-weight:600; text-decoration:none;">
-        📍Jalpai Ganesh Puja Committee.
-      </a>
-    </p>
-  </div>
-</section>
+    <h1 class="hero-title" id="hTitle">Jalpai Ganesh Puja Committee</h1>
 
-<section id="donation" style="max-width:1100px; margin:80px auto 40px; padding:0 20px;">
-  <div style="background:linear-gradient(135deg,#fde68a,#f59e0b); border-radius:22px; padding:40px 25px; text-align:center; box-shadow:0 20px 40px rgba(0,0,0,0.15);">
-    <h2 style="font-size:30px; margin-bottom:15px; color:#1e293b;">Donation</h2>
-    <p style="font-size:18px; font-weight:600; margin-bottom:20px;">
-       দান দেবার জন্য যোগাযোগ করুন ফেসবুক এর মাধ্যমে  
-    </p>
-    <p style="font-size:16px; margin-bottom:25px;">
-      Support us by contributing to Ganesh Puja in your name.<br>
-      Your donation helps us organize the festival with devotion and unity.
-    </p>
-    <div style="font-size:18px; font-weight:700; letter-spacing:1px; color:#020617; margin-bottom:20px;">
-      JALPAI GANESH PUJA COMMITTEE
+    <div class="ornament" id="hOrn">
+      <div class="ornament-line"></div>
+      <div class="ornament-dash"></div>
+      <div class="ornament-dot"></div>
+      <div class="ornament-dash"></div>
+      <div class="ornament-line"></div>
     </div>
-    <p style="font-size:14px; opacity:0.85;">
-      📩 For donation details, please contact us via Facebook Page DM.
-    </p>
-  </div>
-</section>
 
-<footer>
-  © 2026 Jalpaiganeshpujacommittee • Designed with devotion - The page admin will likely be able to respond to your activity within 12 hours 
-</footer>
+    <p class="tagline-bn" id="hTag">আমাদের ওয়েবসাইট তৈরি হচ্ছে</p>
+    <p class="tagline-en" id="hSub">Our website is currently under construction — something divine is on its way.</p>
 
+    <!-- Countdown -->
+    <div id="cd-wrap">
+      <div class="cd-label">Ganesh Chaturthi 2026 · আসছে</div>
+      <div class="cd-grid">
+        <div class="cd-unit">
+          <div class="cd-num" id="cdD">000</div>
+          <div class="cd-tag">Days</div>
+        </div>
+        <div class="cd-sep">:</div>
+        <div class="cd-unit">
+          <div class="cd-num" id="cdH">00</div>
+          <div class="cd-tag">Hours</div>
+        </div>
+        <div class="cd-sep">:</div>
+        <div class="cd-unit">
+          <div class="cd-num" id="cdM">00</div>
+          <div class="cd-tag">Mins</div>
+        </div>
+        <div class="cd-sep">:</div>
+        <div class="cd-unit">
+          <div class="cd-num" id="cdS">00</div>
+          <div class="cd-tag">Secs</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Status message -->
+    <div class="status-card" id="hStatus">
+      <span class="status-dot"></span>
+      <span class="status-text">We are working on this site</span>
+    </div>
+
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <span class="footer-om">ॐ</span>
+    <p>Jalpai Ganesh Puja Committee</p>
+    <p>Jalpai · West Bengal · India</p>
+    <p style="margin-top:10px;">গণেশ পূজা ২০২৬ · গণপতি বাপ্পা মোরয়া</p>
+  </footer>
+
+</div><!-- #main -->
+
+<script>
+// ════════════════════════════════════════
+//  INTRO → MAIN TRANSITION
+// ════════════════════════════════════════
+const intro = document.getElementById('intro');
+const main  = document.getElementById('main');
+
+setTimeout(() => {
+  intro.classList.add('out');
+  setTimeout(() => {
+    intro.style.display = 'none';
+    main.classList.add('on');
+    launchParticles();
+    animateHero();
+  }, 1500);
+}, 3800);
+
+// ════════════════════════════════════════
+//  HERO ELEMENT REVEAL
+// ════════════════════════════════════════
+function animateHero() {
+  const steps = [
+    ['hTitle',  0],
+    ['hOrn',    220],
+    ['hTag',    420],
+    ['hSub',    600],
+    ['cd-wrap', 820],
+    ['hStatus', 1100],
+  ];
+  steps.forEach(([id, delay]) => {
+    const el = document.getElementById(id);
+    if (el) setTimeout(() => el.classList.add('on'), delay);
+  });
+}
+
+// ════════════════════════════════════════
+//  PARTICLE SYSTEM
+// ════════════════════════════════════════
+function launchParticles() {
+  const cv  = document.getElementById('particles');
+  const ctx = cv.getContext('2d');
+  let W, H;
+
+  function resize() {
+    W = cv.width  = window.innerWidth;
+    H = cv.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  class P {
+    constructor() { this.init(true); }
+    init(scatter) {
+      this.x  = Math.random() * (W || 800);
+      this.y  = scatter ? Math.random() * (H || 600) : (H || 600) + 8;
+      this.r  = Math.random() * 2.2 + 0.4;
+      this.vy = Math.random() * 0.55 + 0.18;
+      this.vx = (Math.random() - 0.5) * 0.28;
+      this.a  = 0;
+      this.ma = Math.random() * 0.45 + 0.08;
+      this.up = true;
+      this.age= 0;
+      this.maxAge = Math.random() * 380 + 180;
+      this.hue = 28 + Math.random() * 28;
+    }
+    tick() {
+      this.x += this.vx;
+      this.y -= this.vy;
+      this.age++;
+      if (this.up) {
+        this.a += 0.014;
+        if (this.a >= this.ma) this.up = false;
+      }
+      if (this.age > this.maxAge * 0.65) this.a -= 0.007;
+      if (this.a <= 0 || this.y < -8) this.init(false);
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+      ctx.fillStyle = `hsla(${this.hue},100%,62%,${this.a})`;
+      ctx.shadowBlur  = 7;
+      ctx.shadowColor = `hsla(${this.hue},100%,65%,${this.a * 0.7})`;
+      ctx.fill();
+    }
+  }
+
+  const pool = Array.from({ length: 90 }, () => new P());
+
+  (function loop() {
+    ctx.clearRect(0, 0, W, H);
+    pool.forEach(p => { p.tick(); p.draw(); });
+    requestAnimationFrame(loop);
+  })();
+}
+
+// ════════════════════════════════════════
+//  LIVE COUNTDOWN — Ganesh Chaturthi 2026
+//  (August 23, 2026)
+// ════════════════════════════════════════
+const TARGET = new Date('2026-08-23T06:00:00');
+
+function pad(n, len) { return String(n).padStart(len, '0'); }
+
+function tick() {
+  const diff = TARGET - Date.now();
+  if (diff <= 0) {
+    ['cdD','cdH','cdM','cdS'].forEach(id => { document.getElementById(id).textContent = '00'; });
+    return;
+  }
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+
+  document.getElementById('cdD').textContent = pad(d, 3);
+  document.getElementById('cdH').textContent = pad(h, 2);
+  document.getElementById('cdM').textContent = pad(m, 2);
+  document.getElementById('cdS').textContent = pad(s, 2);
+}
+tick();
+setInterval(tick, 1000);
+
+// ════════════════════════════════════════
+//  PARALLAX — mouse movement
+// ════════════════════════════════════════
+document.addEventListener('mousemove', e => {
+  const mx = (e.clientX / window.innerWidth  - 0.5) * 2;
+  const my = (e.clientY / window.innerHeight - 0.5) * 2;
+  const om = document.getElementById('om-wrap');
+  const ht = document.getElementById('hTitle');
+  if (om) om.style.transform = `translateY(var(--fy,0px)) translate(${mx * 14}px, ${my * 9}px)`;
+  if (ht) ht.style.transform = `translateY(0) translate(${mx * 6}px, ${my * 3}px)`;
+});
+
+// ════════════════════════════════════════
+//  SCROLL REVEAL
+// ════════════════════════════════════════
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
 </body>
 </html>
